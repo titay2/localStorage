@@ -95,7 +95,7 @@ event.preventDefault();
 if (action === 'delete'){
 /*localStorage.removeItem('text');*/
 contactAPI.contacts = contactAPI.contacts.filter(function (contact) {
-      return contact.id !== contact.id
+      return row.dataset.id !== contact.id
     })
     //localStorage.setItem('contacts', JSON.stringify(contacts))
     contactAPI.save() 
