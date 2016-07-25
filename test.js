@@ -22,8 +22,7 @@ return contact
 contactAPI.load()
 //console.log(cont)
 contactAPI.contacts.forEach(function (contact) {
-    var $row = document.createElement('tr')
-    
+  var $row = document.createElement('tr')
   $row.dataset.id = contact.id
   $row.innerHTML = `
     <td>
@@ -43,8 +42,8 @@ contactAPI.contacts.forEach(function (contact) {
   table.appendChild($row)
 })
 form.addEventListener('submit', function(event){
- event.preventDefault();
- save();
+ event.preventDefault()
+ save()
 
 })
 
@@ -147,20 +146,21 @@ if (action === 'save') {
     `
 
     contactAPI.contacts.forEach(function (contact) {
-    if (contact.id === contact.id) {
-      var contact = contactAPI.add ({
-        name : name,
-        contact: contacti,
-        note: note
+    if (row.dataset.id === contact.id) {
+      //var contact = contactAPI.add ({
+        //name : name,
+        //contact: contacti,
+        //note: note
 
-        })
-        //contactItem.name = name
-        //contactItem.contact = contact
-        //contactItem.note = note
+        //})
+        contact.name = name
+        contact.contact = contacti
+        contact.note = note
+        contactAPI.save()
       }
     })
    // localStorage.setItem('contacts', JSON.stringify(contacts))
-   contactAPI.save()
+   
   }
 
   if (action === 'cancel') {
