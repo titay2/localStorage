@@ -1,26 +1,44 @@
 /* global localStorage */
 var form = document.querySelector('#input-name')
 var table = document.querySelector('#mytable')
+
 var contactAPI = {}
 contactAPI.load = function () {
-  contactAPI.contacts = JSON.parse(localStorage.getItem('contacts') || '[]')
-  console.log(contactAPI.contacts)
-}
-contactAPI.save = function () {
-  localStorage.setItem('contacts', JSON.stringify(contactAPI.contacts))
+  return JSON.parse(localStorage.getItem('contacts') || '[]')
 }
 contactAPI.add = function (contact) {
-  console.log(contact)
+  var contacts = contactAPI.load()
+
   contact.id = Math.random().toString(36).substr(2, 7)
-  contactAPI.load()
-  contactAPI.contacts.push(contact)
-  contactAPI.save()
+  contacts.push(contact)
+  localStorage.setItem('contacts', JSON.stringify(contacts))
 
   return contact
 }
+contactAPI.update = function (id, properties) {
+  var contacts = contactAPI.load()
+  contacts = contacts.map(function (contact) {
+    if (id === contact.id) {
+      properties.id = id
+      return properties
+    }
 
-contactAPI.load()
-contactAPI.contacts.forEach(function (contact) {
+    return contact
+  })
+
+  localStorage.setItem('contacts', JSON.stringify(contacts))
+}
+contactAPI.delete = function (id) {
+  var contacts = contactAPI.load()
+  contacts = contacts.filter(function (contact) {
+    return id !== contact.id
+  })
+
+  localStorage.setItem('contacts', JSON.stringify(contacts))
+}
+
+var contacts = contactAPI.load()
+contacts.forEach(function (contact) {
   var $row = document.createElement('tr')
   $row.dataset.id = contact.id
   $row.innerHTML = `
@@ -72,8 +90,6 @@ function save () {
     table.appendChild(newrow)
     form.reset()
   }
-
-  contactAPI.save()
 }
 
 table.addEventListener('click', function (event) {
@@ -87,11 +103,7 @@ table.addEventListener('click', function (event) {
   var note
 
   if (action === 'delete') {
-    contactAPI.contacts = contactAPI.contacts.filter(function (contact) {
-      return row.dataset.id !== contact.id
-    })
-
-    contactAPI.save()
+    contactAPI.delete(row.dataset.id)
     row.remove()
   }
   if (action === 'edit') {
@@ -137,13 +149,10 @@ table.addEventListener('click', function (event) {
       </td>
     `
 
-    contactAPI.contacts.forEach(function (contact) {
-      if (row.dataset.id === contact.id) {
-        contact.name = name
-        contact.contact = contactstring
-        contact.note = note
-        contactAPI.save()
-      }
+    contactAPI.update(row.dataset.id, {
+      name: name,
+      contact: contactstring,
+      note: note
     })
   }
 
