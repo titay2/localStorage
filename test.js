@@ -19,10 +19,7 @@ contactAPI.add = function (contact) {
   return contact
 }
 
-// console.log(contactAPI.contacts)
-// var contacts1 = JSON.parse(localStorage.getItem('contacts') || '[]')
 contactAPI.load()
-// console.log(cont)
 contactAPI.contacts.forEach(function (contact) {
   var $row = document.createElement('tr')
   $row.dataset.id = contact.id
@@ -50,9 +47,6 @@ form.addEventListener('submit', function (event) {
 
 function save () {
   var name = document.querySelector('#textfield').value
-  // var id = Math.random().toString(36).substr(2, 7)
-  // localStorage.setItem('text', textfield );
-  // var name = localStorage.getItem('text');
 
   if (name) {
     var contact = contactAPI.add({
@@ -79,13 +73,12 @@ function save () {
     form.reset()
   }
 
-  // localStorage.setItem('contacts', JSON.stringify(contacts))
   contactAPI.save()
 }
 
 table.addEventListener('click', function (event) {
   event.preventDefault()
-  // var id = Math.random().toString(36).substr(2, 7)
+
   var clickedbtn = event.target
   var row = clickedbtn.closest('tr')
   var action = clickedbtn.dataset.action
@@ -94,12 +87,10 @@ table.addEventListener('click', function (event) {
   var note
 
   if (action === 'delete') {
-    // localStorage.removeItem('text')
     contactAPI.contacts = contactAPI.contacts.filter(function (contact) {
       return row.dataset.id !== contact.id
     })
 
-    // localStorage.setItem('contacts', JSON.stringify(contacts))
     contactAPI.save()
     row.remove()
   }
@@ -148,19 +139,12 @@ table.addEventListener('click', function (event) {
 
     contactAPI.contacts.forEach(function (contact) {
       if (row.dataset.id === contact.id) {
-        // var contact = contactAPI.add ({
-        // name : name,
-        // contact: contactstring,
-        // note: note
-
-        // })
         contact.name = name
         contact.contact = contactstring
         contact.note = note
         contactAPI.save()
       }
     })
-    // localStorage.setItem('contacts', JSON.stringify(contacts))
   }
 
   if (action === 'cancel') {
